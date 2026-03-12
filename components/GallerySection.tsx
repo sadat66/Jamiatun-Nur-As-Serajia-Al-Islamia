@@ -1,0 +1,181 @@
+"use client";
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+
+export default function GallerySection() {
+  const images = [
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306741/IMG-20260312-WA0017_f3fc0v.jpg",
+      alt: "Madrasa Activity 1",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306741/IMG-20260312-WA0015_iva5oo.jpg",
+      alt: "Madrasa Activity 2",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306741/IMG-20260312-WA0014_p6ccyj.jpg",
+      alt: "Madrasa Activity 3",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306741/IMG-20260312-WA0003_yruoik.jpg",
+      alt: "Madrasa Activity 4",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306741/IMG-20260312-WA0013_b0j7q3.jpg",
+      alt: "Madrasa Activity 5",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306741/IMG-20260312-WA0004_a9z871.jpg",
+      alt: "Madrasa Activity 6",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306740/IMG-20260312-WA0002_gm4md9.jpg",
+      alt: "Madrasa Activity 7",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306740/IMG-20260312-WA0008_p7sybi.jpg",
+      alt: "Madrasa Activity 8",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306740/IMG-20260312-WA0016_todmsv.jpg",
+      alt: "Madrasa Activity 9",
+    },
+    {
+      url: "https://res.cloudinary.com/davcfmd78/image/upload/v1773306740/IMG-20260312-WA0007_smfscs.jpg",
+      alt: "Madrasa Activity 10",
+    },
+  ];
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const thumbnailsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    if (thumbnailsRef.current[activeIndex]) {
+      thumbnailsRef.current[activeIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [activeIndex]);
+
+  return (
+    <section className="gallery-section" id="gallery">
+      <div className="container">
+        <div className="section-title">🖼️ ছবি গ্যালারি</div>
+
+        <div className="gallery-grid" style={{ marginTop: 20 }}>
+          {/* Photo Carousel */}
+          <div className="gallery-carousel" style={{ 
+            background: "transparent", 
+            boxShadow: "none",
+            display: "flex",
+            flexDirection: "column"
+          }}>
+            <div
+              className="gallery-main-img"
+              style={{
+                width: "100%",
+                flex: 1, // Allow it to grow
+                minHeight: "450px", // Baseline height
+                position: "relative",
+                overflow: "hidden",
+                borderRadius: "12px",
+                background: "transparent",
+                boxShadow: "var(--shadow-md)"
+              }}
+            >
+              <Image
+                src={images[activeIndex].url}
+                alt={images[activeIndex].alt}
+                fill
+                style={{ objectFit: "cover" }}
+                priority
+              />
+            </div>
+
+            {/* Thumbnails strip */}
+            <div className="gallery-thumbnails" style={{ background: "transparent", padding: "12px 0 0 0", marginTop: "8px" }}>
+              <button 
+                className="gallery-thumb-nav" 
+                aria-label="Previous"
+                onClick={() => setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+              >
+                ‹
+              </button>
+              <div style={{ display: "flex", gap: "10px", overflowX: "auto", flex: 1, padding: "2px", scrollbarWidth: "none" }}>
+                {images.map((img, idx) => (
+                  <div
+                    key={idx}
+                    ref={(el) => { thumbnailsRef.current[idx] = el; }}
+                    className={`gallery-thumb ${idx === activeIndex ? "active" : ""}`}
+                    onClick={() => setActiveIndex(idx)}
+                    style={{
+                      width: 70,
+                      height: 50,
+                      position: "relative",
+                      flexShrink: 0,
+                      cursor: "pointer",
+                      borderRadius: 6,
+                      overflow: "hidden",
+                      border: idx === activeIndex ? "3px solid var(--primary-green)" : "3px solid transparent",
+                      transition: "all 0.2s ease"
+                    }}
+                  >
+                    <Image
+                      src={img.url}
+                      alt={img.alt}
+                      fill
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                ))}
+              </div>
+              <button 
+                className="gallery-thumb-nav" 
+                aria-label="Next"
+                onClick={() => setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+              >
+                ›
+              </button>
+            </div>
+          </div>
+
+          {/* Facebook Embed */}
+          <div className="facebook-embed" style={{ 
+            display: "flex", 
+            flexDirection: "column",
+            height: "100%" 
+          }}>
+            <div className="facebook-embed-header">
+              <span className="fb-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="#1877f2"
+                >
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+              </span>
+              আমাদের ফেসবুক পেজ
+            </div>
+            <div className="facebook-embed-body" style={{ padding: 0, flex: 1 }}>
+              <iframe
+                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61555232242818&tabs=timeline&width=500&height=550&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+                width="100%"
+                height="100%"
+                style={{ border: "none", overflow: "hidden", minHeight: "550px" }}
+                scrolling="no"
+                frameBorder="0"
+                allowFullScreen={true}
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
