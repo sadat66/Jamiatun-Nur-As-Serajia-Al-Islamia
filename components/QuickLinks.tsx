@@ -1,19 +1,31 @@
-export default function QuickLinks() {
-  const links = [
-    { label: "পরিচিতি", href: "#" },
-    { label: "ইতিহাস", href: "#" },
-    { label: "লক্ষ্য ও উদ্দেশ্য", href: "#" },
-    { label: "বিভাগ", href: "#" },
-  ];
+"use client";
 
+const LINKS = [
+  { id: "laksho-uddesho", label: "লক্ষ্য ও উদ্দেশ্য" },
+  { id: "mulniti", label: "মূলনীতি" },
+] as const;
+
+type Props = {
+  activeSection: string | null;
+  onSectionClick: (id: string | null) => void;
+};
+
+export default function QuickLinks({ activeSection, onSectionClick }: Props) {
   return (
     <section className="quick-links" id="quick-links">
       <div className="container">
         <div className="quick-links-grid">
-          {links.map((link, i) => (
-            <a key={i} href={link.href} className="quick-link-item">
+          {LINKS.map((link) => (
+            <button
+              key={link.id}
+              type="button"
+              onClick={() => onSectionClick(link.id)}
+              className={`quick-link-item ${activeSection === link.id ? "quick-link-item-active" : ""}`}
+              aria-expanded={activeSection === link.id}
+              aria-controls={link.id}
+            >
               {link.label}
-            </a>
+            </button>
           ))}
         </div>
       </div>

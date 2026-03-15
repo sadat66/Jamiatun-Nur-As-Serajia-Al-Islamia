@@ -1,0 +1,41 @@
+// Prisma Schema for Landing Madrasa
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String?  // optional detailed body for news/notice
+  type      PostType
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id])
+
+  @@index([type, active])
+  @@index([createdAt])
+}
+
+enum PostType {
+  NEWS
+  NOTICE
+}

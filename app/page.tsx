@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import QuickLinks from "@/components/QuickLinks";
+import AboutAccordionSection from "@/components/AboutAccordionSection";
 import NewsNotice from "@/components/NewsNotice";
 import GallerySection from "@/components/GallerySection";
 import VideoGallery from "@/components/VideoGallery";
@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
       <main>
         <HeroSection />
-        <QuickLinks />
+        <AboutAccordionSection />
         <NewsNotice />
         <GallerySection />
         <VideoGallery />
